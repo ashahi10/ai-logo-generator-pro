@@ -14,7 +14,7 @@ export default function Login() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       alert("Login successful!");
-      router.push("/"); // Redirect to the home page after login
+      router.push("/"); // Redirect after login
     } catch (error) {
       console.error("Login error:", error);
       alert(error.message);
@@ -22,34 +22,29 @@ export default function Login() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 mb-4 w-full"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 mb-4 w-full"
-      />
-      <button
-        onClick={handleLogin}
-        className="bg-blue-600 text-white px-4 py-2 rounded w-full mb-4"
-      >
+    <form onSubmit={handleLogin} className="sign-in-form">
+      <h2 className="title">Login</h2>
+      <div className="input-field">
+        <i className="fas fa-envelope"></i>
+        <input
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="input-field">
+        <i className="fas fa-lock"></i>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <button type="submit" className="btn solid">
         Login
       </button>
-      <p className="text-center">
-        Don't have an account?{" "}
-        <a href="/signup" className="text-blue-500">
-          Register
-        </a>
-      </p>
-    </div>
+    </form>
   );
 }

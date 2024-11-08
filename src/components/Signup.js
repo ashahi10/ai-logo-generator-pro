@@ -1,7 +1,7 @@
 // src/components/Signup.js
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase"; // Import auth instance from firebase.js
+import { auth } from "../firebase";
 import { useRouter } from "next/router";
 
 export default function Signup() {
@@ -14,7 +14,7 @@ export default function Signup() {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       alert("Registration successful!");
-      router.push("/"); // Redirect to the home page after registration
+      router.push("/"); // Redirect after registration
     } catch (error) {
       console.error("Signup error:", error);
       alert(error.message);
@@ -22,34 +22,29 @@ export default function Signup() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4">Register</h1>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 mb-4 w-full"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 mb-4 w-full"
-      />
-      <button
-        onClick={handleSignup}
-        className="bg-blue-600 text-white px-4 py-2 rounded w-full mb-4"
-      >
-        Register
+    <form onSubmit={handleSignup} className="sign-up-form">
+      <h2 className="title">Sign up</h2>
+      <div className="input-field">
+        <i className="fas fa-envelope"></i>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div className="input-field">
+        <i className="fas fa-lock"></i>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      <button type="submit" className="btn">
+        Sign up
       </button>
-      <p className="text-center">
-        Already have an account?{" "}
-        <a href="/login" className="text-blue-500">
-          Login
-        </a>
-      </p>
-    </div>
+    </form>
   );
 }

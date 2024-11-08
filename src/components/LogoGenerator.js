@@ -32,36 +32,56 @@ export default function LogoGenerator() {
     }
   };
 
+  const downloadLogo = async (url) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "generated-logo.png";
+      link.click();
+      URL.revokeObjectURL(link.href);
+    } catch (error) {
+      console.error("Failed to download logo:", error);
+    }
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">AI Logo Generator</h1>
-      <input
-        type="text"
-        placeholder="Enter your logo prompt..."
-        className="text-black border p-2 rounded w-full mb-4"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-      />
-      <button
-        onClick={generateLogos}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-        disabled={loading}
-      >
-        {loading ? "Generating..." : "Generate Logos"}
-      </button>
-      <div className="mt-4">
-        {logos.length > 0 ? (
-          logos.map((logo, index) => (
-            <img
-              key={index}
-              src={logo}
-              alt={`Logo ${index + 1}`}
-              className="w-48 h-auto mx-2 my-4"
-            />
-          ))
-        ) : (
-          !loading && <p>No logos generated yet.</p>
-        )}
+    <div className="logo-generator-page">
+      <div className="logo-generator-container">
+        <h1 className="title">LogoGenAI</h1>
+        <p className="subtitle">Create unique logos by entering a description below</p>
+        <input
+          type="text"
+          placeholder="Enter your logo prompt..."
+          className="prompt-input"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+        />
+        <button
+          onClick={generateLogos}
+          className="generate-button"
+          disabled={loading}
+        >
+          {loading ? "Generating..." : "Generate "}
+        </button>
+        <div className="logos-container">
+          {logos.length > 0 && (
+            <>
+              <img
+                src={logos[0]} // Assuming logos[0] is the first generated logo
+                alt="Generated Logo"
+                className="logo-image"
+              />
+              <button
+                onClick={() => downloadLogo(logos[0])}
+                className="download-button"
+              >
+                Download 
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

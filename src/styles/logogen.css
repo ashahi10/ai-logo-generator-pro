@@ -1,0 +1,117 @@
+/* Background for Logo Generator Page */
+.logo-generator-page {
+    background: linear-gradient(135deg, #151515, #d757d2, #bcd0e5,#151515);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Centering Container */
+.logo-generator-container {
+    max-width: 600px;
+    padding: 2.5rem 2rem;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6); 
+    border-radius: 15px;
+    box-shadow: 
+        5px 5px 15px rgba(0, 0, 0, 0.2), /* Darker shadow for depth */
+        -5px -5px 15px rgba(255, 255, 255, 0.7); /* Light shadow for highlight */
+    text-align: center;
+    margin-top: 5vh;
+    min-height: 80vh;
+    transform: perspective(1000px) rotateX(2deg);
+}
+
+/* Title and Subheading */
+.logo-generator-container .title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.logo-generator-container .subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Input Style */
+.logo-generator-container .prompt-input {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.logo-generator-container .prompt-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Button Style */
+.logo-generator-container .generate-button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logo-generator-container .generate-button:hover {
+    background-color: #0056b3;
+}
+
+.logo-generator-container .generate-button:disabled {
+    background-color: #b0c4de;
+    cursor: not-allowed;
+}
+
+/* Logo Image Display */
+.logo-generator-container .logo-image {
+    width: 300px;
+    height: auto;
+    margin: 4rem auto;
+    border-radius: 8px;
+    border: 2px solid #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.logo-generator-container .logo-image:hover {
+    transform: scale(1.05);
+}
+
+/* No Logos Text */
+.logo-generator-container .no-logos {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 1rem;
+}
+
+.logo-generator-container .download-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.6rem 1.2rem;
+    width: 250px;
+    font-size: 1.3rem;
+    color: white;
+    background-color: #1de445;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.logo-generator-container .download-button:hover {
+    background-color: #1de445;
+}
