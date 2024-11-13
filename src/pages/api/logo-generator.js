@@ -31,7 +31,7 @@ export default async function handler(req, res) {
 
     // Step 3: Parse the response JSON
     const predictionResult = await createPredictionResponse.json();
-    console.log("Replicate API Prediction Result:", predictionResult);
+    console.log("Replicate API Prediction Result:", predictionResult.output);
 
     // Step 4: Extract the output URL (assuming it’s provided in the output)
     const logos = predictionResult && predictionResult.output ? [predictionResult.output] : [];

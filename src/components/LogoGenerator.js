@@ -32,19 +32,45 @@ export default function LogoGenerator() {
     }
   };
 
-  const downloadLogo = async (url) => {
+  const downloadLogoAsPng = async (url) => {
     try {
+      // Fetch the SVG data as text
       const response = await fetch(url);
-      const blob = await response.blob();
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "generated-logo.png";
-      link.click();
-      URL.revokeObjectURL(link.href);
+      const svgText = await response.text();
+  
+      // Create an image element for the SVG data
+      const img = new Image();
+      const svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
+      const urlBlob = URL.createObjectURL(svgBlob);
+  
+      img.onload = () => {
+        // Create a canvas element to draw the SVG
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const context = canvas.getContext("2d");
+        context.drawImage(img, 0, 0);
+  
+        // Convert the canvas content to PNG and trigger download
+        canvas.toBlob((blob) => {
+          const pngUrl = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = pngUrl;
+          link.download = "generated-logo.png"; // Download as PNG
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(pngUrl);
+        }, "image/png");
+        URL.revokeObjectURL(urlBlob);
+      };
+  
+      img.src = urlBlob;
     } catch (error) {
-      console.error("Failed to download logo:", error);
+      console.error("Failed to download logo as PNG:", error);
     }
   };
+  
 
   return (
     <div className="logo-generator-page">
@@ -74,7 +100,7 @@ export default function LogoGenerator() {
                 className="logo-image"
               />
               <button
-                onClick={() => downloadLogo(logos[0])}
+                 onClick={() => downloadLogoAsPng(logos[0])}
                 className="download-button"
               >
                 Download 

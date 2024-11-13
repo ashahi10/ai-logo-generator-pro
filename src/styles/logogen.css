@@ -1,78 +1,98 @@
 /* Background for Logo Generator Page */
 .logo-generator-page {
-    background: linear-gradient(135deg, #151515, #d757d2, #bcd0e5,#151515);
+    background: linear-gradient(135deg, #1a1f36, #3a3d5e, #d5d0d0); /* Darker, sleek gradient for modern look */
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0;
     padding: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
 /* Centering Container */
 .logo-generator-container {
-    max-width: 600px;
-    padding: 2.5rem 2rem;
-    background: linear-gradient(145deg, #ffffff, #e6e6e6); 
+    width: 90%; 
+    max-width: 700px;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #ffffff, #f7f9fc); /* Light background for container */
     border-radius: 15px;
+    border: 3px solid #17191a;
     box-shadow: 
-        5px 5px 15px rgba(0, 0, 0, 0.2), /* Darker shadow for depth */
-        -5px -5px 15px rgba(255, 255, 255, 0.7); /* Light shadow for highlight */
+        0px 10px 15px rgba(0, 0, 0, 0.3), /* Shadow for depth */
+        inset 0px 2px 6px rgba(255, 255, 255, 0.6); /* Inner shadow for soft, elevated effect */
     text-align: center;
     margin-top: 5vh;
-    min-height: 80vh;
-    transform: perspective(1000px) rotateX(2deg);
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.logo-generator-container:hover {
+    transform: scale(1.02); /* Slight zoom on hover for interactivity */
 }
 
 /* Title and Subheading */
 .logo-generator-container .title {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     font-weight: bold;
-    color: #333;
+    font-family: 'Poppins', sans-serif;
+    color: #2c3e50; /* Darker color for contrast */
     margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(52, 152, 219, 0.6), 0 0 12px rgba(52, 152, 219, 0.4); /* Glowing effect */
 }
 
 .logo-generator-container .subtitle {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: #7f8c8d; /* Muted color for subtitle */
+    margin-bottom: 1.8rem;
+    line-height: 1.4;
 }
 
 /* Input Style */
 .logo-generator-container .prompt-input {
     width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 1rem;
-    transition: border-color 0.3s ease;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 1px solid #d1d9e6;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    background-color: #f3f6fa; /* Soft background for input */
+    transition: all 0.3s ease;
+
+    resize: none; /* Disable resizing handle on textarea */
+    min-height: 2.5rem; /* Ensures a decent height for one-line text */
+    overflow-y: auto;
 }
 
 .logo-generator-container .prompt-input:focus {
-    border-color: #007bff;
+    border-color: #3498db;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.3); /* Light blue focus shadow */
     outline: none;
 }
 
 /* Button Style */
 .logo-generator-container .generate-button {
     width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
+    padding: 0.9rem;
+    font-size: 1.1rem;
     color: white;
-    background-color: #007bff;
+    background: linear-gradient(135deg, #3498db, #2980b9); /* Gradient for modern button look */
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .logo-generator-container .generate-button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #2980b9, #1f5f8b); /* Darker on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
 }
 
+/* Disabled Button */
 .logo-generator-container .generate-button:disabled {
-    background-color: #b0c4de;
+    background: #b3cce6;
     cursor: not-allowed;
 }
 
@@ -80,38 +100,44 @@
 .logo-generator-container .logo-image {
     width: 300px;
     height: auto;
-    margin: 4rem auto;
-    border-radius: 8px;
-    border: 2px solid #333;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    margin: 3rem auto;
+    border-radius: 12px;
+    border: 2px solid #eaeaea;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .logo-generator-container .logo-image:hover {
     transform: scale(1.05);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 /* No Logos Text */
 .logo-generator-container .no-logos {
     font-size: 1rem;
-    color: #666;
-    margin-top: 1rem;
+    color: #95a5a6; /* Soft color for placeholder text */
+    margin-top: 1.5rem;
 }
 
+/* Download Button */
 .logo-generator-container .download-button {
     display: inline-block;
     margin-top: 1rem;
-    padding: 0.6rem 1.2rem;
-    width: 250px;
-    font-size: 1.3rem;
+    padding: 0.8rem 1.2rem;
+    width: 100%;
+    max-width: 250px;
+    font-size: 1.2rem;
     color: white;
-    background-color: #1de445;
+    background: linear-gradient(135deg, #27ae60, #219150); /* Green gradient for download */
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 .logo-generator-container .download-button:hover {
-    background-color: #1de445;
+    background: linear-gradient(135deg, #219150, #1a703c);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
 }
