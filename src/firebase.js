@@ -1,7 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth, setPersistence, browserSessionPersistence } from "firebase/auth";
-import "firebase/auth"; 
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,21 +11,39 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-
-
-
-// Initialize Firebase if it hasn't been initialized yet
-//const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// Set persistence to SESSION
 setPersistence(auth, browserSessionPersistence)
-  .then(() => {
-    console.log("Session persistence set successfully");
-  })
-  .catch((error) => {
-    console.error("Error setting session persistence:", error);
-  });
+  .then(() => console.log("Session persistence set"))
+  .catch((error) => console.error("Error setting persistence:", error));
+
+// Function to retrieve or create user data in Firestore
+export async function getUserData(uid) {
+  const userDocRef = doc(db, "users", uid);
+  const userDoc = await getDoc(userDocRef);
+  if (!userDoc.exists()) {
+    // Create the document if it doesn't exist
+    await setDoc(userDocRef, { logoCount: 0, favoriteLogos: [] });
+    return { logoCount: 0, favoriteLogos: [] };
+  }
+  return userDoc.data();
+}
+
+// Function to increment logo count
+export async function incrementLogoCount(uid) {
+  const userDocRef = doc(db, "users", uid);
+  await updateDoc(userDocRef, { logoCount: increment(1) });
+}
+
+// Function to save a logo to favorites
+export async function saveFavoriteLogo(uid, logoUrl) {
+  const userDocRef = doc(db, "users", uid);
+  const userDoc = await getDoc(userDocRef);
+  const favoriteLogos = userDoc.data().favoriteLogos || [];
+  favoriteLogos.push(logoUrl);
+  await updateDoc(userDocRef, { favoriteLogos });
+}
+
 export default app;

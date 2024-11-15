@@ -141,3 +141,58 @@
     background: linear-gradient(135deg, #219150, #1a703c);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
 }
+
+/* Dialog Box */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .dialog-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 300px;
+    width: 100%;
+  }
+  
+  .close-button {
+    background-color: #f51c08;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    background-color: #e65a50;
+  }
+
+/* Favorite Heart Button */
+.logo-generator-container .favorite-button {
+    position: relative;
+    top: 10px; /* Adjust to move the icon slightly lower */
+    left: 140px; /* Adjust to move the icon slightly to the right */
+    font-size: 1.5rem; /* Increase size if needed */
+    cursor: pointer;
+    border: none;
+    background: none;
+    outline: none;
+    transition: transform 0.2s ease;
+}
+
+.logo-generator-container .favorite-button:hover {
+    transform: scale(1.1); /* Slight enlarge on hover */
+}

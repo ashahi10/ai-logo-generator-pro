@@ -1,12 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { auth, incrementLogoCount, getUserData, saveFavoriteLogo } from "../firebase";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 export default function LogoGenerator() {
   const [prompt, setPrompt] = useState("");
   const [logos, setLogos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [logoCount, setLogoCount] = useState(0);
+  const [user, setUser] = useState(null);
+  const [showDialog, setShowDialog] = useState(false); // Controls the free trial dialog box visibility
+  const [saved, setSaved] = useState(false); // Tracks if the logo is saved to favorites
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (auth.currentUser) {
+        const data = await getUserData(auth.currentUser.uid);
+        setLogoCount(data.logoCount);
+        setUser(auth.currentUser);
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const generateLogos = async () => {
+    // Check for the 5-logo limit
+    if (logoCount >= 5) {
+      setShowDialog(true); // Show dialog box instead of alert
+      return;
+    }
+
     setLoading(true);
+    setSaved(false); // Reset saved status when generating a new logo
     try {
       const response = await fetch("/api/logo-generator", {
         method: "POST",
@@ -17,7 +41,7 @@ export default function LogoGenerator() {
       });
 
       const data = await response.json();
-      console.log("API Response:", data); // Add this line to debug frontend response
+      console.log("API Response:", data);
       if (data.logos && Array.isArray(data.logos)) {
         setLogos(data.logos);
       } else if (data.logos) {
@@ -25,6 +49,10 @@ export default function LogoGenerator() {
       } else {
         setLogos([]);
       }
+      
+      // Increment the logo count and update Firestore
+      setLogoCount(logoCount + 1);
+      await incrementLogoCount(auth.currentUser.uid);
     } catch (error) {
       console.error("Failed to generate logos:", error);
     } finally {
@@ -34,29 +62,24 @@ export default function LogoGenerator() {
 
   const downloadLogoAsPng = async (url) => {
     try {
-      // Fetch the SVG data as text
       const response = await fetch(url);
       const svgText = await response.text();
-  
-      // Create an image element for the SVG data
       const img = new Image();
       const svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
       const urlBlob = URL.createObjectURL(svgBlob);
-  
+
       img.onload = () => {
-        // Create a canvas element to draw the SVG
         const canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
         const context = canvas.getContext("2d");
         context.drawImage(img, 0, 0);
-  
-        // Convert the canvas content to PNG and trigger download
+
         canvas.toBlob((blob) => {
           const pngUrl = URL.createObjectURL(blob);
           const link = document.createElement("a");
           link.href = pngUrl;
-          link.download = "generated-logo.png"; // Download as PNG
+          link.download = "generated-logo.png";
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -64,13 +87,19 @@ export default function LogoGenerator() {
         }, "image/png");
         URL.revokeObjectURL(urlBlob);
       };
-  
+
       img.src = urlBlob;
     } catch (error) {
       console.error("Failed to download logo as PNG:", error);
     }
   };
-  
+
+  const saveLogo = async (logoUrl) => {
+    if (user) {
+      await saveFavoriteLogo(user.uid, logoUrl);
+      setSaved(true); // Show saved status
+    }
+  };
 
   return (
     <div className="logo-generator-page">
@@ -95,19 +124,44 @@ export default function LogoGenerator() {
           {logos.length > 0 && (
             <>
               <img
-                src={logos[0]} // Assuming logos[0] is the first generated logo
+                src={logos[0]}
                 alt="Generated Logo"
                 className="logo-image"
               />
               <button
-                 onClick={() => downloadLogoAsPng(logos[0])}
+                onClick={() => downloadLogoAsPng(logos[0])}
                 className="download-button"
               >
-                Download 
+                Download
+              </button>
+              <button
+                onClick={() => saveLogo(logos[0])}
+                className="favorite-button"
+                title={saved ? "Saved to Favorites" : "Add to Favorites"}
+              >
+                {saved ? <FaHeart color="red" size={30} /> : <FaRegHeart size={30} />}
               </button>
             </>
           )}
         </div>
+      </div>
+      {showDialog && (
+        <DialogBox
+          message="Your free trial has ended! Please upgrade to continue."
+          onClose={() => setShowDialog(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+// DialogBox Component for displaying custom dialog
+function DialogBox({ message, onClose }) {
+  return (
+    <div className="dialog-overlay">
+      <div className="dialog-box">
+        <p>{message}</p>
+        <button onClick={onClose} className="close-button">OK</button>
       </div>
     </div>
   );
