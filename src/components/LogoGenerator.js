@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { auth, incrementLogoCount, getUserData, saveFavoriteLogo } from "../firebase";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 export default function LogoGenerator() {
   const [prompt, setPrompt] = useState("");
@@ -10,6 +11,8 @@ export default function LogoGenerator() {
   const [user, setUser] = useState(null);
   const [showDialog, setShowDialog] = useState(false); // Controls the free trial dialog box visibility
   const [saved, setSaved] = useState(false); // Tracks if the logo is saved to favorites
+  const [navActive, setNavActive] = useState(false); // Tracks the navigation bar state
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,6 +24,14 @@ export default function LogoGenerator() {
     };
     fetchUserData();
   }, []);
+
+  const toggleNav = () => {
+    setNavActive(!navActive);
+  };
+
+  const handleLogout = () => {
+    router.push("/AuthPage"); // Redirect to the signup page
+  };
 
   const generateLogos = async () => {
     // Check for the 5-logo limit
@@ -103,6 +114,18 @@ export default function LogoGenerator() {
 
   return (
     <div className="logo-generator-page">
+     <nav className={navActive ? "active" : ""} id="nav">
+        <ul>
+          <li><a onClick={() => router.push("/logogenerator")}>Home</a></li>
+          <li><a onClick={() => router.push("/favorites")}>Favorites</a></li>
+          <li><a>Ideas</a></li>
+          <li><a onClick={handleLogout}>Logout</a></li>
+        </ul>
+        <button className="icon" id="toggle" onClick={toggleNav}>
+          <div className="line line1"></div>
+          <div className="line line2"></div>
+        </button>
+      </nav>
       <div className="logo-generator-container">
         <h1 className="title">LogoGenAI</h1>
         <p className="subtitle">Create unique logos by entering a description below</p>
@@ -134,13 +157,13 @@ export default function LogoGenerator() {
               >
                 Download
               </button>
-              <button
+              {/* <button
                 onClick={() => saveLogo(logos[0])}
                 className="favorite-button"
                 title={saved ? "Saved to Favorites" : "Add to Favorites"}
               >
                 {saved ? <FaHeart color="red" size={30} /> : <FaRegHeart size={30} />}
-              </button>
+              </button> */}
             </>
           )}
         </div>
