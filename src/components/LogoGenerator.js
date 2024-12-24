@@ -147,7 +147,7 @@ export default function LogoGenerator() {
         <div className="logos-container">
           {logos.length > 0 && (
             <>
-            <Image
+            <img
                 src={logos[0]}
                 alt="Generated Logo"
                 className="logo-image"
