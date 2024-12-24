@@ -1,0 +1,9 @@
+customHeaders:
+  - pattern: '**/*'
+    headers:
+      - key: 'Access-Control-Allow-Origin'
+        value: 'https://main.d10ah87e1zsr6c.amplifyapp.com'
+      - key: 'Access-Control-Allow-Headers'
+        value: 'Content-Type, Authorization'
+      - key: 'Access-Control-Allow-Methods'
+        value: 'GET, POST, OPTIONS'
