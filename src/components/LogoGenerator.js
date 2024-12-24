@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { auth, incrementLogoCount, getUserData, saveFavoriteLogo } from "../firebase";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function LogoGenerator() {
   const [prompt, setPrompt] = useState("");
@@ -146,7 +147,7 @@ export default function LogoGenerator() {
         <div className="logos-container">
           {logos.length > 0 && (
             <>
-              <img
+            <Image
                 src={logos[0]}
                 alt="Generated Logo"
                 className="logo-image"
