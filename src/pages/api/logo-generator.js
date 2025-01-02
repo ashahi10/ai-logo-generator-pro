@@ -2,7 +2,6 @@ import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
-  console.log("REPLICATE_API_TOKEN:", REPLICATE_API_TOKEN);
   const { prompt } = req.body;
 
   if (!prompt) {

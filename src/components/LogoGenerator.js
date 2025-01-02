@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { auth, incrementLogoCount, getUserData, saveFavoriteLogo } from "../firebase";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useRouter } from "next/router";
-import Image from "next/image";
 
 export default function LogoGenerator() {
   const [prompt, setPrompt] = useState("");
@@ -76,17 +75,21 @@ export default function LogoGenerator() {
     try {
       const response = await fetch(url);
       const svgText = await response.text();
-      const img = new Image();
+  
+      // Use window.Image to avoid conflict with next/image
+      const img = new window.Image();
+  
+      // Create a Blob for the SVG text
       const svgBlob = new Blob([svgText], { type: "image/svg+xml;charset=utf-8" });
       const urlBlob = URL.createObjectURL(svgBlob);
-
+  
       img.onload = () => {
         const canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
         const context = canvas.getContext("2d");
         context.drawImage(img, 0, 0);
-
+  
         canvas.toBlob((blob) => {
           const pngUrl = URL.createObjectURL(blob);
           const link = document.createElement("a");
@@ -99,20 +102,17 @@ export default function LogoGenerator() {
         }, "image/png");
         URL.revokeObjectURL(urlBlob);
       };
-
+  
+      img.onerror = (e) => {
+        console.error("Error loading image for download", e);
+      };
+  
       img.src = urlBlob;
     } catch (error) {
       console.error("Failed to download logo as PNG:", error);
     }
   };
-
-  const saveLogo = async (logoUrl) => {
-    if (user) {
-      await saveFavoriteLogo(user.uid, logoUrl);
-      setSaved(true); // Show saved status
-    }
-  };
-
+  
   return (
     <div className="logo-generator-page">
      <nav className={navActive ? "active" : ""} id="nav">
