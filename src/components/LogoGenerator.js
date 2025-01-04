@@ -60,7 +60,18 @@ export default function LogoGenerator() {
       } else {
         setLogos([]);
       }
-      
+      if (data.logos && data.logos.length > 0) {
+        if (window.innerWidth <= 1366) {
+          // For smaller screens like MacBook
+          document.body.style.zoom = "75%";
+        } else {
+          // For larger screens
+          document.body.style.zoom = "100%";
+        }
+      } else {
+        // Reset zoom if no image is generated
+        document.body.style.zoom = "100%";
+      }
       // Increment the logo count and update Firestore
       setLogoCount(logoCount + 1);
       await incrementLogoCount(auth.currentUser.uid);
