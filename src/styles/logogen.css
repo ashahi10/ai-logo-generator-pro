@@ -2,43 +2,57 @@
 
 @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
 body {
-    overflow-y: auto; /* Enable vertical scrolling */
+    
     height: 100vh;
     margin: 0;
     padding: 0;
 }
 
 .logo-generator-page {
-    background: linear-gradient(135deg, #37499a, #fdfdfd, #506d88); /* Darker, sleek gradient for modern look */
-    height: 100vh;
+    background: linear-gradient(135deg, #cea388, #fdfdfd, #7d9d99); /* Darker, sleek gradient for modern look */
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     margin: 0;
-    padding: 0;
+    /*padding: 0;*/
+    padding: 2rem 1rem; 
     font-family: 'Roboto', sans-serif;
+    overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Centering Container */
 .logo-generator-container {
-    width: 90%; 
-    max-width: 700px;
-    padding: 3rem 2rem;
-    background: linear-gradient(135deg, #ffffff, #f7f9fc); /* Light background for container */
-    border-radius: 15px;
-    border: 3px solid #17191a;
-    box-shadow: 
-        0px 10px 15px rgba(0, 0, 0, 0.3), /* Shadow for depth */
-        inset 0px 2px 6px rgba(255, 255, 255, 0.6); /* Inner shadow for soft, elevated effect */
-    text-align: center;
-    margin-top: 5vh;
-    transform: scale(1);
-    transition: transform 0.3s ease;
+  width: 80%; /* Decreased width for a more compact layout */
+  max-width: 600px; /* Further limit the max width */
+  padding: 2rem 1.5rem; /* Reduced padding to shrink the container */
+  background: linear-gradient(135deg, #ffffff, #f7f9fc);
+  border-radius: 15px;
+  border: 3px solid #17191a;
+  box-shadow: 
+      0px 8px 12px rgba(0, 0, 0, 0.25), 
+      inset 0px 2px 4px rgba(255, 255, 255, 0.5);
+  text-align: center;
+  margin: 4vh auto; /* Reduced margin */
+  transform: scale(1);
+  transition: transform 0.3s ease-in-out;
+  max-height: auto; /* Automatically adjusts */
+  margin-bottom: 2rem; /* Prevent it from sticking to the bottom */
+  overflow: hidden; /* Remove internal scroll */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .logo-generator-container:hover {
-    transform: scale(1.02); /* Slight zoom on hover for interactivity */
+  transform: scale(1.01); /* Reduced hover effect */
 }
+.logo-generator-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 
 /* Title and Subheading */
 .logo-generator-container .title {
@@ -301,4 +315,50 @@ nav.active .icon .line1 {
 
 nav.active .icon .line2 {
   transform: rotate(765deg) translateY(-5.5px);
+}
+
+
+/* Adjust the container for smaller screens (e.g., MacBook or tablets) */
+@media screen and (max-width: 768px) {
+  .logo-generator-container {
+      width: 90%;
+      padding: 1.5rem 1rem;
+  }
+
+  .logo-generator-container .title {
+      font-size: 2rem;
+  }
+
+  .logo-generator-container .subtitle {
+      font-size: 1rem;
+  }
+
+  .logo-generator-container .logo-image {
+    max-width: 250px;
+    max-height: 250px;
+}
+}
+
+/* For screens smaller than 1024px */
+@media screen and (max-width: 1024px) {
+  .logo-generator-container {
+      width: 90%;
+      padding: 1.5rem;
+  }
+
+  .logo-generator-container .logo-image {
+      max-width: 250px;
+  }
+}
+
+/* For screens smaller than 768px (e.g., tablets) */
+@media screen and (max-width: 768px) {
+  .logo-generator-container {
+      width: 95%;
+      padding: 1rem;
+  }
+
+  .logo-generator-container .logo-image {
+      max-width: 200px;
+  }
 }
