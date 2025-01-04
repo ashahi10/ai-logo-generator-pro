@@ -19,7 +19,7 @@ export default function AuthPage() {
           <div className="panel left-panel">
             <div className="content">
               <h3>New here?</h3>
-              <p>Welcome! Sign up to start your journey with us.</p>
+              <p>Welcome! Sign up to start Creating .</p>
               <button
                 className="btn transparent"
                 onClick={() => setIsSignUpMode(true)}
