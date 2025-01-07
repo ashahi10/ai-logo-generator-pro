@@ -3,6 +3,7 @@ import { auth, incrementLogoCount, getUserData, saveFavoriteLogo } from "../fire
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useRouter } from "next/router";
 
+
 export default function LogoGenerator() {
   const [prompt, setPrompt] = useState("");
   const [logos, setLogos] = useState([]);
@@ -13,6 +14,17 @@ export default function LogoGenerator() {
   const [saved, setSaved] = useState(false); // Tracks if the logo is saved to favorites
   const [navActive, setNavActive] = useState(false); // Tracks the navigation bar state
   const router = useRouter();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        router.replace("/AuthPage");
+      }
+    });
+  
+    return () => unsubscribe();
+  }, [router]);
+  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -29,9 +41,23 @@ export default function LogoGenerator() {
     setNavActive(!navActive);
   };
 
-  const handleLogout = () => {
-    router.push("/AuthPage"); // Redirect to the signup page
+  const handleLogout = async () => {
+    try {
+      // Sign out the user
+      await auth.signOut();
+  
+      // Clear session storage to ensure no cached session
+      sessionStorage.clear();
+  
+      // Redirect to the AuthPage and ensure history is cleared
+      router.replace("/AuthPage");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
+  
+  
+  
 
   const generateLogos = async () => {
     // Check for the 5-logo limit
@@ -64,7 +90,7 @@ export default function LogoGenerator() {
         if (window.innerWidth <= 1366) {
           // For smaller screens like MacBook
           document.body.style.zoom = "75%";
-        } else {
+        } else { 
           // For larger screens
           document.body.style.zoom = "100%";
         }
@@ -126,11 +152,18 @@ export default function LogoGenerator() {
   
   return (
     <div className="logo-generator-page">
+     <div className="bg-animation">
+      <div id="stars"></div>
+      <div id="stars2"></div>
+      <div id="stars3"></div>
+      <div id="stars4"></div>
+    </div>
+
      <nav className={navActive ? "active" : ""} id="nav">
         <ul>
           <li><a onClick={() => router.push("/logogenerator")}>Home</a></li>
           <li><a onClick={() => router.push("/favorites")}>Favorites</a></li>
-          <li><a>Ideas</a></li>
+          <li><a>Pricing</a></li>
           <li><a onClick={handleLogout}>Logout</a></li>
         </ul>
         <button className="icon" id="toggle" onClick={toggleNav}>
@@ -155,6 +188,37 @@ export default function LogoGenerator() {
         >
           {loading ? "Generating..." : "Generate "}
         </button>
+        {loading && (
+          <div className="loader-overlay">
+    <svg className="loader-svg" viewBox="0 0 256 128" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#5ebd3e" />
+          <stop offset="33%" stopColor="#ffb900" />
+          <stop offset="67%" stopColor="#f78200" />
+          <stop offset="100%" stopColor="#e23838" />
+        </linearGradient>
+        <linearGradient id="grad2" x1="1" y1="0" x2="0" y2="0">
+          <stop offset="0%" stopColor="#e23838" />
+          <stop offset="33%" stopColor="#973999" />
+          <stop offset="67%" stopColor="#009cdf" />
+          <stop offset="100%" stopColor="#5ebd3e" />
+        </linearGradient>
+      </defs>
+      <g fill="none" strokeLinecap="round" strokeWidth="16">
+        <g className="ip__track" stroke="#ddd">
+          <path d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56" />
+          <path d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64" />
+        </g>
+        <g strokeDasharray="180 656">
+          <path className="loader-worm1" stroke="url(#grad1)" strokeDashoffset="0" d="M8,64s0-56,60-56,60,112,120,112,60-56,60-56" />
+          <path className="loader-worm2" stroke="url(#grad2)" strokeDashoffset="358" d="M248,64s0-56-60-56-60,112-120,112S8,64,8,64" />
+        </g>
+      </g>
+    </svg>
+  </div>
+)}
+
         <div className="logos-container">
           {logos.length > 0 && (
             <>
