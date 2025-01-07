@@ -9,7 +9,7 @@ body {
 }
 
 .logo-generator-page {
-    background: linear-gradient(135deg, #cea388, #fdfdfd, #7d9d99); /* Darker, sleek gradient for modern look */
+   
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -26,7 +26,7 @@ body {
   width: 80%; /* Decreased width for a more compact layout */
   max-width: 600px; /* Further limit the max width */
   padding: 2rem 1.5rem; /* Reduced padding to shrink the container */
-  background: linear-gradient(135deg, #ffffff, #f7f9fc);
+  background: linear-gradient(135deg, #e4dcdc, #ced1d6);
   border-radius: 15px;
   border: 3px solid #17191a;
   box-shadow: 

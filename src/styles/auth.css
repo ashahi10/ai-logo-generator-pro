@@ -176,6 +176,12 @@
   border-radius: 50%;
   z-index: 6;
 }
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
 
 .auth-page .image {
   width: 100%;
