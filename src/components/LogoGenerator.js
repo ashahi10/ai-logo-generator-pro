@@ -13,6 +13,7 @@ export default function LogoGenerator() {
   const [showDialog, setShowDialog] = useState(false); // Controls the free trial dialog box visibility
   const [saved, setSaved] = useState(false); // Tracks if the logo is saved to favorites
   const [navActive, setNavActive] = useState(false); // Tracks the navigation bar state
+  const [showComingSoonDialog, setShowComingSoonDialog] = useState(false); // Controls the "Coming Soon" dialog visibility
   const router = useRouter();
 
   useEffect(() => {
@@ -56,6 +57,9 @@ export default function LogoGenerator() {
     }
   };
   
+  const handleComingSoonClick = () => {
+    setShowComingSoonDialog(true); // Show the "Coming Soon" dialog
+  };
   
   
 
@@ -162,8 +166,8 @@ export default function LogoGenerator() {
      <nav className={navActive ? "active" : ""} id="nav">
         <ul>
           <li><a onClick={() => router.push("/logogenerator")}>Home</a></li>
-          <li><a onClick={() => router.push("/favorites")}>Favorites</a></li>
-          <li><a>Pricing</a></li>
+          <li><a onClick={handleComingSoonClick}>Favorites</a></li>
+          <li><a onClick={handleComingSoonClick}>Pricing</a></li>
           <li><a onClick={handleLogout}>Logout</a></li>
         </ul>
         <button className="icon" id="toggle" onClick={toggleNav}>
@@ -250,7 +254,14 @@ export default function LogoGenerator() {
           onClose={() => setShowDialog(false)}
         />
       )}
+      {showComingSoonDialog && (
+  <DialogBox
+    message="This feature is coming soon! Stay tuned."
+    onClose={() => setShowComingSoonDialog(false)}
+  />
+)}
     </div>
+    
   );
 }
 
